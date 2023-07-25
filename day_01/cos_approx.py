@@ -9,8 +9,8 @@ __email__ = 'edeboer@ucsd.edu'
 from math import factorial
 from math import pi
 
-
 def cos_approx(x, accuracy=10):
+
     """this will do a taylor function approx of cosine of n=10"""
     
     to_sum = [((-1)**n)*(x**(2*n))/factorial(2*n) for n in range(accuracy+1)]
