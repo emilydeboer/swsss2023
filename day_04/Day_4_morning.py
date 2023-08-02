@@ -38,19 +38,37 @@ import pandas as pd
 csv_path = 'Data/jena_climate_2009_2016/jena_climate_2009_2016.csv'
 df = pd.read_csv(csv_path)
 
-#%%
+
 """
 TODO: Introduction to dataframe; data slicing, removing data from the 
 dataframe, assessing first and last n-th elements
 """
 
+# Slice [start:stop:step], starting from index 5 take every 6th record. array-style slicing
+df = df[5::6]
+print(df)
+
+# Let's remove the datetime value and make it into a separate variable
+date_time = pd.to_datetime(df.pop('Date Time'), format='%d.%m.%Y %H:%M:%S')
+print(date_time)
+
+print(df)
+
+plot_cols = ['T (degC)', 'p (mbar)', 'rho (g/m**3)']
+plot_features = df[plot_cols]
+plot_features.index = date_time
+print(plot_features)
+_ = plot_features.plot(subplots=True)
+
+plot_features = df[plot_cols][:480]
+plot_features.index = date_time[:480]
+_ = plot_features.plot(subplots=True)
 #%%
 """
 Plot a subset of data from the dataframe
 """
 
 plot_cols = ['T (degC)', 'p (mbar)', 'rho (g/m**3)']
-
 
 #%%
 """
@@ -65,6 +83,12 @@ and max. wv has unrealistic values (-9999). These outliers need to be removed
 from our data by substituting with an interpolated value.
 """
 
+import numpy as np
+
+wv = df['wv (m/s)']
+bad_wv = wv == -9999.0
+wv.index = date_time
+idx_bad = np.where(bad_wv == True)
 
 #%%
 """

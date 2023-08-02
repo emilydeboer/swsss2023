@@ -5,22 +5,34 @@ import time
 import toy_reactor as model
 
 def explicit_euler_step(f,x,t,h):
-    return ... # please complete this function
+    
+    return x + h*f(x,t) # please complete this function
 
 def implicit_euler_step(f,x,t,h):    
-    return ... # please complete this function
+        
+    update_rule = lambda x_new : -x_new + h*f(x_new, t+h) + x    
+    x_new = fsolve(update_rule, x)
+    
+    return x_new # please complete this function
 
 def crank_nicolson_step(f,x,t,h):
-    return ... # please complete this function
+    
+    update_rule = lambda x_new : x - x_new + h/2*(f(x_new, t+h) + f(x, t))    
+    x_new = fsolve(update_rule, x)
+
+    return x_new # please complete this function
 
 def heun_step(f,x,t,h):
-    return ... # please complete this function
+    
+    y = x + h*f(x,t)
+    
+    return x + h/2*(f(x, t) + f(y, t + h)) # please complete this function
 
 
 # after implementing a time stepper, 
 # add them to this list.
 # Then, run the script and check if the figures are as expected!
-integrators = []
+integrators = [explicit_euler_step, implicit_euler_step, crank_nicolson_step, heun_step]
 
 ####################################
 ### no modification needed beyond this point
@@ -48,7 +60,6 @@ k = np.array([100.0, 0.25, 1.0])
 x_0 = np.array([1.0, 0.0, 0.0])
 
 h_range = 10**np.linspace(-4,1,6)
-
 
 
 #################################
@@ -94,7 +105,6 @@ for integrator in integrators:
             sol, ts = performance[h, integrator, "sol"]
             axs[i,j].set_title("h = "+str(h))
             plot_traces(axs[i,j], ts, sol)   
-    fig.show()
     fig.savefig(integrator2name[integrator]+"_traces.pdf")
 
 def compute_error(sol, ref_sol):
@@ -117,6 +127,5 @@ for integrator in integrators:
 axs[0].legend(loc = 'lower right')
 plt.tight_layout()
 fig.savefig("integrator_performance.pdf")
-fig.show()
 
 

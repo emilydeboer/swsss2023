@@ -11,8 +11,6 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import datetime as dt
-
-# dataset = nc.Dataset('\\Users\emide\Documents\swsss2023\day_02\wfs.t06z.20230725_05\wfs.t06z.ipe05.20230725_053000.nc')
                      
 dir = '/Users/emide/Documents/swsss2023/day_02/' #folder for files
 filename = 'omni_min_def_FokVF3TAiU.lst' 

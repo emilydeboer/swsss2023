@@ -16,6 +16,7 @@ def reaction_rates(c,k):
         outputs:
             reaction rates (numpy array)
     """
+    
     return k*[c[0],c[1],c[2]**2]
 
 def reactor(c,t,k,S):

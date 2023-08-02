@@ -15,9 +15,13 @@ import runge_kutta as rk
 
 
 # reaction network 
-# A+X --> 2X
+# X --> 2X
 # X + Y --> 2Y
 # Y --> P 
+
+S = np.array([[1, -1, 0], [0, 1, -1], [0, 0, 1]])
+k = np.array([1, 2, 1])
+c_0 = np.array([1, 0.25, 0])
 
 
 def reaction_rates(c,k):
@@ -31,7 +35,12 @@ def reaction_rates(c,k):
         outputs:
             reaction rates (numpy array)
     """
-    return ... # please complete according to the given reaction network 
+    v = np.array([1, 1, 1])
+    pi_prod = np.ones(len(c))
+        
+    reaction_rates = k*pi_prod
+    
+    return np.array([k[0]*c[0], k[1]*c[0]*c[1], k[2]*c[1]]) 
 
 def reactor(c,t,k,S):
     """
@@ -46,8 +55,13 @@ def reactor(c,t,k,S):
         outputs: 
             dc/dt - numpy array
     """
+    r = reaction_rates(c, k)
     
-    return ... # please complete this function
+    c_dot = np.dot(S, r)
+    
+    
+    return c_dot
+
 
 # Please play around with the step size to study the effect on the solution
 h = 1e-2

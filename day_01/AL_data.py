@@ -9,11 +9,11 @@ email: edeboer@ucsd.edu
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-from datetime import datetime
+import datetime as dt
 from swmfpy.web import get_omni_data
 
-start_time = datetime(2002, 4, 3) # my birthday!
-end_time = datetime(2002, 4, 4) # day after birthday
+start_time = dt.datetime(2002, 4, 3) # my birthday!
+end_time = dt.datetime(2002, 4, 4) # day after birthday
 data = get_omni_data(start_time, end_time) # returns dictionary
 
 for key in data.keys(): # printing to see what keys there are in dictionary
@@ -29,10 +29,7 @@ if np.shape(data['times']) == np.shape(data['al']):
     plt.xlabel('Date and Time ')   # x axis title
     plt.xticks(rotation=45) # <-- makes the x axis diagonal
     
-    # xformat = mdates.DateFormatter('%H:%M')
-    # plt.gcf().axes[0].xaxis.set_major_formatter(xformat)
 
-## below is for fun
 min_index = np.argmin(data['al'])
 print(min_index)
 
