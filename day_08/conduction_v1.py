@@ -25,6 +25,16 @@ if __name__ == "__main__":
     b = np.zeros(nPts) + 2
     c = np.zeros(nPts) - 1
     d = np.zeros(nPts)
+    
+    # additions
+    Q = np.zeros(len(x))
+    for i in range(len(x)):
+        if x[i] > 2 and x[i] < 8:
+                Q[i] = -100
+    lam = 10
+    dz = x[1] - x[0]
+    dz2 = dz*dz
+    d[:] = -Q*dz2/lam
 
     # boundary conditions (bottom - fixed):
     a[0] = 0
@@ -33,10 +43,10 @@ if __name__ == "__main__":
     d[0] = t_lower
 
     # top - fixed:
-    a[-1] = 0
-    b[-1] = 1
+    a[-1] = 1
+    b[-1] = -1
     c[-1] = 0
-    d[-1] = t_upper
+    d[-1] = 0
 
     # Add a source term:
     
@@ -45,14 +55,17 @@ if __name__ == "__main__":
 
     # plot:
     fig = plt.figure(figsize = (10,10))
-    ax = fig.add_subplot(111)
-
-    ax.plot(x, t)
+    ax = fig.add_subplot(211)
+    ax.plot(t, x)
+    ax.set_ylabel('x')
+    ax.set_xlabel('Temperature')
+    
+    ax2 = fig.add_subplot(212)
+    ax2.plot(Q, x)
+    ax2.set_ylabel('x')
+    ax2.set_xlabel('Q')
 
     plotfile = 'conduction_v1.png'
     print('writing : ',plotfile)    
     fig.savefig(plotfile)
-    plt.close()
-    
-    
     
