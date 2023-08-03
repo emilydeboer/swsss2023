@@ -36,6 +36,7 @@ def density_array(m_AMU = 28, n0 = 1e19,  nPts = 100):
     
     # H array
     H_array = k*T_array/(m*g_array)
+    print('h array ', H_array)
                  
     # density array
     n_array = np.zeros(nPts)

@@ -10,12 +10,13 @@ from tridiagonal import solve_tridiagonal
 
 if __name__ == "__main__":
 
-    dx = 0.25
+    dx = 4
 
     # set x with 1 ghost cell on both sides:
-    x = np.arange(-dx, 10 + 2 * dx, dx)
+    x = 100 + np.arange(-dx, 400 + 2*dx, dx)
+    # alt = 100+x*40
 
-    t_lower = 200.0
+    t_lower = 200.0 
     t_upper = 1000.0
 
     nPts = len(x)
@@ -27,10 +28,10 @@ if __name__ == "__main__":
     d = np.zeros(nPts)
     
     # additions
-    lam = 10
+    lam = 80
     
     # time dependent term
-    nDays = 3
+    nDays = 27
     dt = 1
     times = np.arange(0, nDays*24, dt)
     lon = 0.0
@@ -41,6 +42,15 @@ if __name__ == "__main__":
 
     # temperature grid to store temps at different times
     temp_grid = np.zeros([len(times), len(x)])
+    
+    # diurnal and semidurnal
+    AmpDi = 10
+    AmpSd = 5
+    PhaseDi = np.pi/2
+    PhaseSd = 3*np.pi/2
+    
+    # adding wavelengths
+    f107 = 100 + 50/(25*365)*times + 25*np.sin(times/(27*24)*2*np.pi)
 
     for i, hour in enumerate(times):
         ut = hour % 24
@@ -50,16 +60,16 @@ if __name__ == "__main__":
         if factor < 0:
             factor = 0
             
-        sun_heat = 100
+        sun_heat = f107[i]*.4/100
     
         # setting Q for only some altitudes
-        cond = np.logical_and(x < 7, x > 3)
+        cond = np.logical_and(x < 400, x > 200)
         
         QEUV = np.zeros(nPts)    
         QEUV[cond] = -sun_heat*factor
         
         Qback = np.zeros(nPts)
-        Qback[cond] = -100
+        Qback[cond] = -0.4
        
         Qtotal = Qback + QEUV
         
@@ -72,7 +82,8 @@ if __name__ == "__main__":
         a[0] = 0
         b[0] = 1
         c[0] = 0
-        d[0] = t_lower
+        d[0] = t_lower + AmpDi*np.sin(local_time/24*2*np.pi + PhaseDi) + \
+                AmpSd*np.sin(local_time/24*2*2*np.pi + PhaseSd)
 
         # top - fixed:
         a[-1] = 1
@@ -90,8 +101,7 @@ if __name__ == "__main__":
         # ax.set_ylabel('Altitude')
         # ax.set_xlabel('Temperature')
         
-        
-    cs = ax.contourf(times/24, 100+x*40, np.array(temp_grid.T))
+    cs = ax.contourf(times/24, x, np.array(temp_grid.T), cmap= 'inferno' )
     ax.set_ylabel('Altitude (km)')
     ax.set_xlabel('Time (days)')
     cbar = plt.colorbar(cs, label = 'Temperature (K)')

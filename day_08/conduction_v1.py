@@ -47,6 +47,10 @@ if __name__ == "__main__":
     b[-1] = -1
     c[-1] = 0
     d[-1] = 0
+    a[-1] = 0
+    b[-1] = 1
+    c[-1] = 0
+    d[-1] = t_upper
 
     # Add a source term:
     
@@ -64,8 +68,14 @@ if __name__ == "__main__":
     ax2.plot(Q, x)
     ax2.set_ylabel('x')
     ax2.set_xlabel('Q')
+    ax = fig.add_subplot(111)
+
+    ax.plot(x, t)
 
     plotfile = 'conduction_v1.png'
     print('writing : ',plotfile)    
     fig.savefig(plotfile)
+    plt.close()
+    
+    
     
