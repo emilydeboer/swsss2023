@@ -27,8 +27,9 @@ function dTdt(T, p, t)
 
     dT[1] = # here you need to add the finite difference approximation for the 1st grid point
     for i in 2:length(T)-1
-        dT[i] = # here you need to add the finite difference approximation for the ith grid point
+        dT[i] = 10 # here you need to add the finite difference approximation for the ith grid point
     end
+
     dT[N] = # here you need to add the finite difference approximation for the ith grid point
 
     return dT
